@@ -1,0 +1,66 @@
+<!doctype html>
+<title>flexibility</title>
+<meta charset="utf-8">
+<script src="../flexibility.js"></script>
+<link rel="stylesheet" href="test.shared.css">
+<h1>flexibility: flexception</h1>
+
+<script src="https://cdn.polyfill.io/v2/polyfill.min.js"></script>
+<script>
+var forEach = Array.prototype.forEach;
+
+var xhr = new XMLHttpRequest();
+
+xhr.open('GET', 'test.flexception.shared.html?' + Date.now());
+
+xhr.addEventListener('load', function () {
+	var frag = document.createDocumentFragment();
+	var html = frag.appendChild(document.createElement('x'));
+
+	if (frag.createElement) {
+		frag.createElement('section');
+
+		document.createElement('section');
+	}
+
+	html.innerHTML = xhr.responseText.replace(/data-style/g, 'data-style style');;
+
+	while (html.childNodes.length) {
+		frag.appendChild(html.firstChild);
+	}
+
+	frag.removeChild(html);
+
+	document.body.appendChild(frag);
+
+	var container = document.getElementById('container');
+
+	var containerRuntimeStyle = container.style;
+
+	var textarea = document.createElement('textarea');
+
+	textarea.setAttribute('style', 'font-family:monospace,monospace;font-size:100%');
+	textarea.setAttribute('cols', 40);
+	textarea.setAttribute('rows', 8);
+
+	textarea.value = container.getAttribute('style').replace(/;\s*/g, ';\n');
+
+	document.body.appendChild(textarea);
+
+	textarea.addEventListener('keyup', onkeyup);
+	window.addEventListener('resize', onkeyup);
+
+	onkeyup();
+
+	function onkeyup() {
+		container.removeAttribute('style');
+
+		var style = textarea.value.replace(/\s+/, ' ');
+
+		container.setAttribute('style', style);
+		container.setAttribute('data-style', style);
+	}
+});
+
+xhr.send();
+</script>

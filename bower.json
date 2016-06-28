@@ -1,7 +1,7 @@
 {
   "name": "flexibility",
   "description": "Use Flexbox while supporting older Internet Explorers",
-  "main": "dist/flexibility.js",
+  "main": "flexibility.js",
   "authors": [
     "Jonathan Neal <jonathantneal@hotmail.com> (http://jonathantneal.com)"
   ],
